@@ -4,164 +4,251 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Perfil de Investidor</title>
-  <style>
-    :root {
-      --primary-color: #f63b9c;
-      --bg-gradient-start: #1c50e1;
-      --bg-gradient-end: #d7dde9;
-    }
+ <style>
+  :root {
+    --primary-color: #f63b9c;
+    --bg-gradient-start: #1c50e1;
+    --bg-gradient-end: #d7dde9;
+  }
 
-    * {
-      box-sizing: border-box;
-    }
+  * {
+    box-sizing: border-box;
+  }
 
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to bottom right, var(--bg-gradient-start), var(--bg-gradient-end));
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    width: 100%;
+    overflow: hidden;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .header {
+    padding: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .question {
+    margin-bottom: 20px;
+  }
+
+  .question label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .option input[type="radio"] {
+    margin-right: 10px;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .btn-back {
+    background-color: #d1d5db;
+    color: #374151;
+  }
+
+  .btn-next {
+    background-color: var(--primary-color);
+    color: white;
+  }
+
+  .btn-disabled {
+    background-color: #cbd5e1;
+    cursor: not-allowed;
+  }
+
+  .result {
+    text-align: center;
+    padding: 30px 20px;
+  }
+
+  .result h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  .profile-tag {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 24px;
+    color: rgb(230, 70, 174);
+    font-weight: bold;
+    margin-top: 15px;
+  }
+
+  .profile-MuitoAgressivo {
+    background-color: #ef4444;
+  }
+
+  .profile-Agressivo {
+    background-color: #f97316;
+  }
+
+  .profile-Dinamico {
+    background-color: #f59e0b;
+  }
+
+  .profile-Moderado {
+    background-color: #10b981;
+  }
+
+  .profile-Prudente {
+    background-color: #3b82f6;
+  }
+
+  .profile-Conservador {
+    background-color: #6366f1;
+  }
+
+  .profile-MuitoConservador {
+    background-color: #8b5cf6;
+  }
+
+  .restart-btn {
+    margin-top: 20px;
+  }
+
+  .details {
+    text-align: left;
+    margin-top: 20px;
+    background: #f3f4f6;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .details ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .details li {
+    margin-bottom: 5px;
+  }
+
+  .summary {
+    margin-top: 15px;
+    font-weight: bold;
+  }
+
+  .summary p {
+    margin: 5px 0;
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px) {
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, var(--bg-gradient-start), var(--bg-gradient-end));
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      padding: 10px;
     }
 
     .container {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      max-width: 700px;
-      width: 100%;
-      overflow: hidden;
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      max-width: 100%;
+      padding: 10px;
     }
 
     .header {
-      padding: 20px;
-      background-color: var(--primary-color);
-      color: white;
-      text-align: center;
-    }
-
-    .content {
-      padding: 20px;
-    }
-
-    .question {
-      margin-bottom: 20px;
-    }
-
-    .question label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    .option {
-      display: flex;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .option input[type="radio"] {
-      margin-right: 10px;
+      padding: 15px;
     }
 
     .footer {
-      display: flex;
-      justify-content: space-between;
-      padding: 15px 20px;
-      background: #f9fafb;
-      border-top: 1px solid #e5e7eb;
+      flex-direction: column;
+      gap: 10px;
     }
 
     button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .btn-back {
-      background-color: #d1d5db;
-      color: #374151;
-    }
-
-    .btn-next {
-      background-color: var(--primary-color);
-      color: white;
-    }
-
-    .btn-disabled {
-      background-color: #cbd5e1;
-      cursor: not-allowed;
-    }
-
-    .result {
-      text-align: center;
-      padding: 30px 20px;
+      width: 100%;
     }
 
     .result h2 {
-      font-size: 24px;
-      margin-bottom: 15px;
+      font-size: 20px;
     }
 
     .profile-tag {
-      display: inline-block;
-      padding: 10px 20px;
-      border-radius: 999px;
-      font-size: 24px;
-      color: rgb(230, 70, 174);
-      font-weight: bold;
-      margin-top: 15px;
-    }
-
-    .profile-MuitoAgressivo { background-color: #ef4444; }
-    .profile-Agressivo { background-color: #f97316; }
-    .profile-Dinamico { background-color: #f59e0b; }
-    .profile-Moderado { background-color: #10b981; }
-    .profile-Prudente { background-color: #3b82f6; }
-    .profile-Conservador { background-color: #6366f1; }
-    .profile-MuitoConservador { background-color: #8b5cf6; }
-
-    .restart-btn {
-      margin-top: 20px;
+      font-size: 18px;
+      padding: 8px 16px;
     }
 
     .details {
-      text-align: left;
-      margin-top: 20px;
-      background: #f3f4f6;
-      padding: 15px;
-      border-radius: 8px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .header h1 {
+      font-size: 18px;
+    }
+
+    .header h3 {
       font-size: 14px;
     }
 
-    .details ul {
-      list-style: none;
-      padding-left: 0;
+    .result h2 {
+      font-size: 18px;
     }
 
-    .details li {
-      margin-bottom: 5px;
+    .profile-tag {
+      font-size: 16px;
+      padding: 6px 12px;
     }
 
-    .summary {
-      margin-top: 15px;
-      font-weight: bold;
+    .details {
+      font-size: 10px;
     }
-
-    .summary p {
-      margin: 5px 0;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
 

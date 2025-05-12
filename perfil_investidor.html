@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil de Investidor</title>
+  <style>
+    :root {
+      --primary-color: #f63b9c;
+      --bg-gradient-start: #1c50e1;
+      --bg-gradient-end: #d7dde9;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, var(--bg-gradient-start), var(--bg-gradient-end));
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      max-width: 700px;
+      width: 100%;
+      overflow: hidden;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      padding: 20px;
+      background-color: var(--primary-color);
+      color: white;
+      text-align: center;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .question label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .option input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 20px;
+      background: #f9fafb;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-back {
+      background-color: #d1d5db;
+      color: #374151;
+    }
+
+    .btn-next {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-disabled {
+      background-color: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    .result {
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    .result h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .profile-tag {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 24px;
+      color: rgb(230, 70, 174);
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .profile-MuitoAgressivo { background-color: #ef4444; }
+    .profile-Agressivo { background-color: #f97316; }
+    .profile-Dinamico { background-color: #f59e0b; }
+    .profile-Moderado { background-color: #10b981; }
+    .profile-Prudente { background-color: #3b82f6; }
+    .profile-Conservador { background-color: #6366f1; }
+    .profile-MuitoConservador { background-color: #8b5cf6; }
+
+    .restart-btn {
+      margin-top: 20px;
+    }
+
+    .details {
+      text-align: left;
+      margin-top: 20px;
+      background: #f3f4f6;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .details ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .details li {
+      margin-bottom: 5px;
+    }
+
+    .summary {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .summary p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="app">
+  <div class="header">
+    <h1>Perfil de Investidor </h1>
+    <h3>Produto AGEAS</h3>
+    <p id="stepIndicator">Etapa 1 de 4</p>
+  </div>
+
+  <div class="content" id="formContainer">
+    <!-- Perguntas aparecem aqui -->
+  </div>
+
+  <div class="footer">
+    <button id="backBtn" class="btn-back">Voltar</button>
+    <button id="nextBtn" class="btn-next">Próximo</button>
+  </div>
+</div>
+
+<script>
+  const questionsByStep = {
+    1: [
+      {
+        id: "knowledge",
+        label: "1. CONHECIMENTO DO TOMADOR DO SEGURO\nComo classifica o seu conhecimento?",
+        options: [
+          "Tenho profundo conhecimento das características e riscos dos produtos financeiros e do funcionamento dos mercados financeiros",
+          "Tenho bons conhecimentos das características e riscos dos produtos financeiros e do funcionamento dos mercados financeiros",
+          "Tenho conhecimento razoável das características e riscos dos produtos financeiros e do funcionamento dos mercados financeiros",
+          "Sem experiência. Não conheço as características e riscos dos produtos financeiros nem domino o funcionamento dos mercados"
+        ]
+      }
+    ],
+    2: [
+      {
+        id: "investmentFrequency",
+        label: "2. EXPERIÊNCIA DO INVESTIMENTO\nQuantas vezes investiu nos Mercados Financeiros nos últimos 10 anos?",
+        options: ["Superior ou igual a 6 vezes", "Entre 3 e 5 vezes", "Entre 1 e 2 vezes", "Nenhuma"]
+      },
+      {
+        id: "unitLinkedInvestment",
+        label: "Quantas vezes investiu em Produtos Financeiros Unit Linked nos últimos 10 anos?",
+        options: ["Superior ou igual a 6 vezes", "Entre 3 e 5 vezes", "Entre 1 e 2 vezes", "Nenhuma"]
+      }
+    ],
+    3: [
+      {
+        id: "objective",
+        label: "3. OBJETIVO DO INVESTIMENTO\nQuando investe num produto financeiro qual o seu principal objetivo?",
+        options: [
+          "Valorização do capital, estando disponível a incorrer em risco elevado, consciente da possibilidade de perda do capital investido",
+          "Valorização do capital, estando disponível a incorrer em risco, tendo uma probabilidade de receber, no mínimo, 90% do capital",
+          "Garantia de capital",
+          "Garantia absoluta de capital e rendimento"
+        ]
+      },
+      {
+        id: "term",
+        label: "Ao investir num produto financeiro, qual o prazo para o qual está disponível para imobilizar o capital?",
+        options: ["Superior a 8 anos", "Entre 5 e 8 anos", "Entre 2 e 4 anos", "Inferior a 2 anos"]
+      },
+      {
+        id: "withdrawBeforeMaturity",
+        label: "Durante o período de vigência do produto, prevê necessitar do montante investido antes do vencimento?",
+        options: ["Não", "Muito Improvável", "Provavelmente", "Sim"]
+      },
+      {
+        id: "proportionOfWealth",
+        label: "Qual a proporção que este Investimento representa na totalidade do seu patrimônio financeiro?",
+        options: ["Entre 0% e 10%", "Entre 11% e 20%", "Entre 21% e 30%", "Superior a 30%"]
+      }
+    ],
+    4: [
+      {
+        id: "riskProfile",
+        label: "4. NÍVEL DE RISCO\nPor princípio, o nível de risco de um produto/investimento é inversamente proporcional ao potencial de rentabilidade. Qual o perfil em que se enquadra?",
+        options: [
+          "Perfil Agressivo. Pretendo investir em ativos com risco elevado, mas com potencial de rentabilidade e perdas também elevadas",
+          "Perfil Moderado. Pretendo investir com risco médio, mas com potencial de rentabilidade e perdas superiores",
+          "Perfil Conservador. Pretendo investir com risco baixo e por conseguinte potencial de rentabilidade também baixo",
+          "Perfil Muito Conservador. Pretendo investir com risco muito baixo e por conseguinte potencial de rentabilidade também muito"
+        ]
+      }
+    ]
+  };
+
+  let step = 1;
+  const formData = {};
+  let result = null;
+
+  const formContainer = document.getElementById("formContainer");
+  const nextBtn = document.getElementById("nextBtn");
+  const backBtn = document.getElementById("backBtn");
+
+  function getPoints(index) {
+    switch (index) {
+      case 0: return 4;
+      case 1: return 3;
+      case 2: return 2;
+      case 3: return 1;
+      default: return 0;
+    }
+  }
+
+  function renderQuestions() {
+    formContainer.innerHTML = "";
+    const questions = questionsByStep[step];
+
+    questions.forEach(question => {
+      const div = document.createElement("div");
+      div.className = "question";
+
+      const label = document.createElement("label");
+      label.textContent = question.label;
+      div.appendChild(label);
+
+      question.options.forEach((option, index) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "option";
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = question.id;
+        input.value = option;
+        input.addEventListener("change", () => {
+          formData[question.id] = option;
+          updateButtonState();
+        });
+
+        if (formData[question.id] === option) {
+          input.checked = true;
+        }
+
+        const label = document.createElement("label");
+        label.textContent = option;
+
+        wrapper.appendChild(input);
+        wrapper.appendChild(label);
+        div.appendChild(wrapper);
+      });
+
+      formContainer.appendChild(div);
+    });
+
+    document.getElementById("stepIndicator").textContent = `Etapa ${step} de 4`;
+  }
+
+  function updateButtonState() {
+    const currentQuestions = questionsByStep[step];
+    const allAnswered = currentQuestions.every(q => formData[q.id] !== undefined);
+    nextBtn.disabled = !allAnswered;
+    nextBtn.classList.toggle("btn-disabled", !allAnswered);
+  }
+
+  function calculateResult() {
+    let valueA = 0;
+    let valueB = 0;
+    const details = [];
+
+    // Ordem das perguntas para identificação clara
+    const orderedQuestions = [
+      { key: "knowledge", label: "Pergunta 1" },
+      { key: "investmentFrequency", label: "Pergunta 2.1" },
+      { key: "unitLinkedInvestment", label: "Pergunta 2.2" },
+      { key: "objective", label: "Pergunta 3.1" },
+      { key: "term", label: "Pergunta 3.2" },
+      { key: "withdrawBeforeMaturity", label: "Pergunta 3.3" },
+      { key: "proportionOfWealth", label: "Pergunta 3.4" },
+      { key: "riskProfile", label: "Pergunta 4" },
+    ];
+
+    for (const { key, label } of orderedQuestions) {
+      if (!formData[key]) continue;
+
+      const question = Object.values(questionsByStep).flat().find(q => q.id === key);
+      const index = question.options.indexOf(formData[key]);
+      const points = getPoints(index);
+      const letter = String.fromCharCode(65 + index); // A, B, C, D
+
+      if (key === "proportionOfWealth") {
+        const multiplied = points * 3;
+        valueB += multiplied;
+        details.push(`${label} (${letter}) → ${points} x 3 = ${multiplied} ponto(s)`);
+      } else {
+        valueA += points;
+        details.push(`${label} (${letter}) → ${points} ponto(s)`);
+      }
+    }
+
+    const totalScore = valueA + valueB;
+
+    // Determinar o perfil
+    let profile = "";
+    if (totalScore >= 36 && totalScore <= 40) profile = "Perfil Muito Agressivo";
+    else if (totalScore >= 31) profile = "Perfil Agressivo";
+    else if (totalScore >= 26) profile = "Perfil Dinâmico";
+    else if (totalScore >= 17) profile = "Perfil Moderado";
+    else if (totalScore >= 14) profile = "Perfil Prudente";
+    else if (totalScore >= 11) profile = "Perfil Conservador";
+    else profile = "Perfil Muito Conservador";
+
+    result = { score: totalScore, profile, details, valueA, valueB };
+  }
+
+  function renderResult() {
+    formContainer.innerHTML = `
+      <div class="result">
+        <h2>Resultado do Perfil de Investidor</h2>
+        <div class="details">
+          <p><strong>Detalhes do Cálculo:</strong></p>
+          <ul>${result.details.map(detail => `<li>• ${detail}</li>`).join("")}</ul>
+          <div class="summary">
+            <p><strong>Valor A (somatório normal):</strong> ${result.valueA} ponto(s)</p>
+            <p><strong>Valor B (Pergunta 3.4 x3):</strong> ${result.valueB} ponto(s)</p>
+            <p><strong>Pontuação Total (A + B):</strong> ${result.score} ponto(s)</p>
+          </div>
+          <p class="profile-tag profile-${result.profile.replace(/\s+/g, '')}">
+            ${result.profile}
+            <h5>Simulador desenvolvido por Carlos Barradas</h5>
+          </p>
+        </div>
+        <button class="btn-back restart-btn">Refazer Questionário</button>
+      </div>
+    `;
+
+    document.querySelector(".restart-btn").addEventListener("click", () => {
+      step = 1;
+      result = null;
+      Object.keys(formData).forEach(k => delete formData[k]);
+      renderQuestions();
+      updateButtonState();
+    });
+  }
+
+  nextBtn.addEventListener("click", () => {
+    if (step < 4) {
+      step++;
+      renderQuestions();
+      updateButtonState();
+    } else {
+      calculateResult();
+      renderResult();
+    }
+  });
+
+  backBtn.addEventListener("click", () => {
+    if (step > 1) {
+      step--;
+      renderQuestions();
+      updateButtonState();
+    }
+  });
+
+  // Inicialização
+  renderQuestions();
+  updateButtonState();
+</script>
+
+</body>
+</html>
